@@ -12,7 +12,7 @@ const { authMiddleware } = require("./middlewares/authmiddleware");
 const app = express();
 const uploadDir = path.join(__dirname, "uploads");
 
-// Ensure uploads directory exists
+
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
 }
@@ -55,7 +55,7 @@ if (process.env.NODE_ENV !== "production") {
     });
 }
 
-// Connect to DB for production
+
 if (process.env.NODE_ENV === "production") {
     connection()
         .then(() => console.log("Production DB connected"))
