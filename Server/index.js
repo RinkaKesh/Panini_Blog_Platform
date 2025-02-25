@@ -19,7 +19,7 @@ if (!fs.existsSync(uploadDir)) {
 
 // CORS Configuration
 const corsOptions = {
-    origin: ["http://localhost:5173"],
+    origin: ["http://localhost:5173","https://echoversecheenta.vercel.app/"],
     credentials: true,
     optionsSuccessStatus: 200,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
