@@ -95,7 +95,7 @@ const Profile = () => {
       const handlesubmit = async (e) => {
         e.preventDefault();
         if (!id) return;
-        const url = `http://localhost:8000/user/edit/${id}`;
+        const url = `https://panini-blog.vercel.app/user/edit/${id}`;
         try {
             setIsloading(true);
             const response = await axios.patch(url, formData, {

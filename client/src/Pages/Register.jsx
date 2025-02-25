@@ -29,7 +29,7 @@ const Register = () => {
             const response = await axios({
                 method: "POST",
                 data: formData,
-                url: "http://localhost:8000/user/register"
+                url: "https://panini-blog.vercel.app/user/register"
             })
             if (response.status == 201) {
                 toast.success(response.data.message);

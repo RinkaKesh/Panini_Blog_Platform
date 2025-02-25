@@ -35,7 +35,7 @@ const Login = () => {
             const response = await axios({
                 method: "POST",
                 data: formData,
-                url: "http://localhost:8000/user/login"
+                url: "https://panini-blog.vercel.app/user/login"
             })
             if (response.status == 200) {
                 toast.success(response.data.message);
