@@ -10,7 +10,7 @@ const { userRoute } = require("./routes/userRoute");
 const { authMiddleware } = require("./middlewares/authmiddleware");
 
 const app = express();
-const uploadDir = path.join(__dirname, "uploads");
+const uploadDir = process.env.NODE_ENV === "production" ? "/tmp" : path.join(__dirname, "uploads");
 
 
 if (!fs.existsSync(uploadDir)) {
@@ -31,7 +31,13 @@ app.options("*", cors());
 app.use(express.json());
 
 
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+if (process.env.NODE_ENV !== "production") {
+    app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+} else {
+ 
+    app.use("/uploads", express.static("/tmp"));
+}
+
 
 
 app.get("/", (req, res) => {

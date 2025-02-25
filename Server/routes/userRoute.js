@@ -151,9 +151,9 @@ const bcrypt = require("bcryptjs");
 const path = require("path");
 const fs = require("fs");
 
-const uploadDir = path.join(__dirname, "../uploads");
+const uploadDir = "/tmp";
 
-// Ensure uploads directory exists
+
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
 }
@@ -203,7 +203,7 @@ userRoute.patch("/edit/:id", upload.single("image"), async (req, res) => {
 
         const updatedData = { ...req.body };
         if (req.file) {
-            updatedData.image = `/uploads/${req.file.filename}`;
+            updatedData.image = `/tmp/${req.file.filename}`; 
         }
 
         await UserModel.findByIdAndUpdate(req.params.id, updatedData, { new: true });
