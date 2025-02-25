@@ -75,7 +75,7 @@ const Login = () => {
     return (
         <div className="mt-[82px] h-[calc(100vh-82px)] flex flex-col relative md:mt-0 md:h-screen">
             <Header header_text={"Login"} />
-            <div className='w-full flex flex-1 items-center justify-center -mt-[200px]'>
+            <div className='w-full flex flex-1 items-center justify-center'>
                 <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-lg items-center border border-amber-100">
                     <p className="text-3xl font-bold bg-gradient-to-r from-[#59B792] to-[#2d9470] bg-clip-text text-transparent mb-6 text-center">Login Here</p>
                     <p className='my-4 mb-4 text-center text-base text-[#4B5563]'>Login to Get Started</p>
