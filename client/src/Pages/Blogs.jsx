@@ -153,7 +153,7 @@ const Blogs = () => {
   const fetchBlogs = async () => {
     try {
       setIsLoading(true)
-      const response = await axios.get("http://localhost:8000/blogs");
+      const response = await axios.get("https://panini-blog.vercel.app/blogs");
       setBlogs(response.data.data);
     } catch (error) {
       toast.error("Error fetching blogs");

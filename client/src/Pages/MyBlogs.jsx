@@ -88,7 +88,7 @@ const MyBlogs = () => {
     try {
       setDeleteInProgress(true);
       setDeletingBlogId(id);
-      const response = await axios.delete(`http://localhost:8000/blogs/${id}`, {
+      const response = await axios.delete(`https://panini-blog.vercel.app/blogs/${id}`, {
         headers: { Authorization: getToken() },
       });
       if (response.status === 200) {

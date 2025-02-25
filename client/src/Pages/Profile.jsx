@@ -29,7 +29,7 @@ const Profile = () => {
 
         try {
             setIsloading(true);
-            const response = await axios.get(`http://localhost:8000/user/${id}`, {
+            const response = await axios.get(`https://panini-blog.vercel.app/user/${id}`, {
                 headers: { Authorization: getToken() }
             });
 
