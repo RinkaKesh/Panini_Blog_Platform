@@ -82,92 +82,39 @@ const Profile = () => {
     }, [id])
 
 
-    // const handleImageChange = (e) => {
-    //     const file = e.target.files[0];
-    //     if (file) {
-    //         setFormData({ ...formData, image: URL.createObjectURL(file) });
-    //     }
-    // };
-
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
-            setFormData({ ...formData, image: file });
+            setFormData({ ...formData, image: URL.createObjectURL(file) });
         }
     };
-    // const handlesubmit = async (e) => {
-    //     e.preventDefault();
-    //     if (!id) return;
-    //     const url = `https://panini-blog.vercel.app/user/edit/${id}`;
-    //     try {
-    //         setIsloading(true);
-    //         const response = await axios.patch(url, formData, {
-    //             headers: {
-    //                 Authorization: getToken(),
-    //             },
-    //         });
 
-    //         if (response.status === 200) {
-    //             toast.success(response.data.message);
-
-
-    //             const updatedProfileData = {
-    //                 ...profileData,
-    //                 name: formData.name,
-    //                 email: formData.email,
-    //                 image: formData.image,
-    //                 bio: formData.bio
-    //             };
-
-    //             // Update both context and localStorage
-    //             setProfileData(updatedProfileData);
-    //             localStorage.setItem("userdata", JSON.stringify(updatedProfileData));
-    //         } else {
-    //             toast.info(response.data.message);
-    //         }
-    //     } catch (error) {
-    //         console.error(error);
-    //         toast.error("Failed to update profile");
-    //     } finally {
-    //         setIsloading(false);
-    //     }
-    // };
+   
     const handlesubmit = async (e) => {
         e.preventDefault();
         if (!id) return;
-        
         const url = `https://panini-blog.vercel.app/user/edit/${id}`;
-        
         try {
             setIsloading(true);
-            
-            const formDataToSend = new FormData();
-            formDataToSend.append("name", formData.name);
-            formDataToSend.append("email", formData.email);
-            formDataToSend.append("bio", formData.bio);
-            
-            if (formData.image instanceof File) {
-                formDataToSend.append("image", formData.image);
-            }
-    
-            const response = await axios.patch(url, formDataToSend, {
+            const response = await axios.patch(url, formData, {
                 headers: {
                     Authorization: getToken(),
-                    "Content-Type": "multipart/form-data",
                 },
             });
-    
+
             if (response.status === 200) {
                 toast.success(response.data.message);
-    
+
+
                 const updatedProfileData = {
                     ...profileData,
                     name: formData.name,
                     email: formData.email,
-                    image: response.data.data.image, 
+                    image: formData.image,
                     bio: formData.bio
                 };
-    
+
+                // Update both context and localStorage
                 setProfileData(updatedProfileData);
                 localStorage.setItem("userdata", JSON.stringify(updatedProfileData));
             } else {
@@ -180,6 +127,54 @@ const Profile = () => {
             setIsloading(false);
         }
     };
+    // const handlesubmit = async (e) => {
+    //     e.preventDefault();
+    //     if (!id) return;
+        
+    //     const url = `https://panini-blog.vercel.app/user/edit/${id}`;
+        
+    //     try {
+    //         setIsloading(true);
+            
+    //         const formDataToSend = new FormData();
+    //         formDataToSend.append("name", formData.name);
+    //         formDataToSend.append("email", formData.email);
+    //         formDataToSend.append("bio", formData.bio);
+            
+    //         if (formData.image instanceof File) {
+    //             formDataToSend.append("image", formData.image);
+    //         }
+    
+    //         const response = await axios.patch(url, formDataToSend, {
+    //             headers: {
+    //                 Authorization: getToken(),
+    //                 "Content-Type": "multipart/form-data",
+    //             },
+    //         });
+    
+    //         if (response.status === 200) {
+    //             toast.success(response.data.message);
+    
+    //             const updatedProfileData = {
+    //                 ...profileData,
+    //                 name: formData.name,
+    //                 email: formData.email,
+    //                 image: response.data.data.image, 
+    //                 bio: formData.bio
+    //             };
+    
+    //             setProfileData(updatedProfileData);
+    //             localStorage.setItem("userdata", JSON.stringify(updatedProfileData));
+    //         } else {
+    //             toast.info(response.data.message);
+    //         }
+    //     } catch (error) {
+    //         console.error(error);
+    //         toast.error("Failed to update profile");
+    //     } finally {
+    //         setIsloading(false);
+    //     }
+    // };
     
 
 
