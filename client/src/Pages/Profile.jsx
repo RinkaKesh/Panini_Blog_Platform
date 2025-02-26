@@ -153,7 +153,7 @@ const Profile = () => {
             const response = await axios.patch(url, formDataToSend, {
                 headers: {
                     Authorization: getToken(),
-                    "Content-Type": "multipart/form-data",
+                    // "Content-Type": "multipart/form-data",
                 },
             });
     
