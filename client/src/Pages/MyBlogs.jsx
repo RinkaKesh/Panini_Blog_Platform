@@ -52,7 +52,7 @@ const MyBlogs = () => {
     if (!id) return;
     try {
       setIsLoading(true);
-      const response = await axios.get(`http://localhost:8000/blogs/user/${id}`, {
+      const response = await axios.get(`https://panini-blog.vercel.app/blogs/user/${id}`, {
         headers: { Authorization: getToken() },
       });
       if (response.status === 200) {
