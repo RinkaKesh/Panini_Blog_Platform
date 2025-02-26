@@ -82,19 +82,19 @@ const Profile = () => {
     }, [id])
 
 
-    const handleImageChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            setFormData({ ...formData, image: URL.createObjectURL(file) });
-        }
-    };
-
     // const handleImageChange = (e) => {
     //     const file = e.target.files[0];
     //     if (file) {
-    //         setFormData({ ...formData, image: file });
+    //         setFormData({ ...formData, image: URL.createObjectURL(file) });
     //     }
     // };
+
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setFormData({ ...formData, image: file });
+        }
+    };
     // const handlesubmit = async (e) => {
     //     e.preventDefault();
     //     if (!id) return;
@@ -153,7 +153,7 @@ const Profile = () => {
             const response = await axios.patch(url, formDataToSend, {
                 headers: {
                     Authorization: getToken(),
-                    // "Content-Type": "multipart/form-data",
+                    "Content-Type": "multipart/form-data",
                 },
             });
     
