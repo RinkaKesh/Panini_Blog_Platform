@@ -82,19 +82,19 @@ const Profile = () => {
     }, [id])
 
 
-    // const handleImageChange = (e) => {
-    //     const file = e.target.files[0];
-    //     if (file) {
-    //         setFormData({ ...formData, image: URL.createObjectURL(file) });
-    //     }
-    // };
-
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
-            setFormData({ ...formData, image: file });
+            setFormData({ ...formData, image: URL.createObjectURL(file) });
         }
     };
+
+    // const handleImageChange = (e) => {
+    //     const file = e.target.files[0];
+    //     if (file) {
+    //         setFormData({ ...formData, image: file });
+    //     }
+    // };
     // const handlesubmit = async (e) => {
     //     e.preventDefault();
     //     if (!id) return;
