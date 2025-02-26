@@ -28,7 +28,7 @@ blogRoute.post("/create", authMiddleware, async (req, res) => {
 blogRoute.get("/", async (req, res) => {
     try {
         const { page = 1, limit = 10 } = req.query;
-        const posts = await BlogModel.find()
+        const posts = await BlogModel.find().sort({ createdAt: -1 })
             .populate("author", "name")
             .populate("comments.user", "name") // Show commenter names
             .populate("likes", "name") // Show who liked
@@ -96,7 +96,10 @@ blogRoute.delete("/:id", authMiddleware, async (req, res) => {
 blogRoute.get("/user/:userId", async (req, res) => {
     try {
         const user = await UserModel.findById(req.params.userId)
-            .populate("userBlogs")
+        .populate({
+            path: "userBlogs",
+            options: { sort: { createdAt: -1 } }
+        })
             .lean();
 
         if (!user) return res.status(404).send({ message: "User not found" });
