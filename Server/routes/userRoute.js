@@ -70,27 +70,7 @@ userRoute.patch("/edit/:id", upload.single("image"), async (req, res) => {
         res.status(500).send({ message: error.message });
     }
 });
-// userRoute.patch("/edit/:id", upload.single("image"), async (req, res) => {
-//     try {
-//         const userToEdit = await UserModel.findById(req.params.id);
-//         if (!userToEdit) {
-//             return res.status(404).send({ message: "User not found" });
-//         }
 
-//         const updatedData = { ...req.body };
-//         if (req.file) {
-//             updatedData.image = `/tmp/${req.file.filename}`;
-//         }
-
-//         const updatedUser = await UserModel.findByIdAndUpdate(req.params.id, updatedData, { new: true });
-
-//         res.status(200).send({ message: "Profile Updated Successfully", data: updatedUser });
-//     } catch (error) {
-//         res.status(500).send({ message: error.message });
-//     }
-// });
-
-// Register user with image upload
 userRoute.post("/register", upload.single("image"), async (req, res) => {
     try {
         const { name, email, password } = req.body;

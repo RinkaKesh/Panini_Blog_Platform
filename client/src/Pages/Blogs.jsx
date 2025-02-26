@@ -266,7 +266,7 @@ const Blogs = () => {
 
   const handleLike = async (id) => {
     try {
-      await axios.post(`http://localhost:8000/blogs/${id}/like`);
+      await axios.post(`https://panini-blog.vercel.app/blogs/${id}/like`);
       fetchBlogs();
     } catch (error) {
       toast.error("Error liking post");
@@ -276,7 +276,7 @@ const Blogs = () => {
   const handleComment = async (id) => {
     if (!newComments[id]?.trim()) return; // Prevent empty comments
     try {
-      await axios.post(`http://localhost:8000/blogs/${id}/comment`, {
+      await axios.post(`https://panini-blog.vercel.app/blogs/${id}/comment`, {
         content: newComments[id],
       });
       setNewComments((prev) => ({ ...prev, [id]: "" })); // Clear input for that blog
