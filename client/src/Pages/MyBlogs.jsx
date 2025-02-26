@@ -138,7 +138,7 @@ const MyBlogs = () => {
   const handleTagClick = (tag) => {
     setSelectedTags(prev => {
       if (prev.includes(tag)) {
-        return prev.filter(t => t !== tag); // Deselect if already selected
+        return prev.filter(t => t !== tag); 
       } else {
         return [...prev, tag]; 
       }
@@ -179,7 +179,7 @@ const MyBlogs = () => {
               <div className="relative flex-grow">
                 <input 
                   type="text" 
-                  className="w-full p-2 pl-10 border rounded-md focus:ring-2 focus:ring-[#59B792] focus:outline-none"
+                  className="w-full p-2 pl-10 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#59B792] focus:border-[#59B792]"
                   placeholder="Search by title, content, or tags..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
@@ -204,7 +204,7 @@ const MyBlogs = () => {
                     key={tag}
                     className={`px-3 py-1 rounded-full text-sm transition-colors ${
                       selectedTags.includes(tag) 
-                        ? 'bg-amber-500 text-white' 
+                        ? 'bg-[#8ec2ad] text-white' 
                         : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                     }`}
                     onClick={() => handleTagClick(tag)}
@@ -251,8 +251,13 @@ const MyBlogs = () => {
               </div>
             ) : (
               filteredBlogs.map((blog) => (
-                <div key={blog._id} className="bg-white p-4 rounded-lg shadow-md border border-amber-100">
-                  <h2 className="text-lg font-bold text-amber-500">{blog.title}</h2>
+                <div key={blog._id} className="relative bg-white p-4 rounded-lg shadow-md border border-amber-100">
+                    {deleteInProgress && deletingBlogId === blog._id && (
+                        <div className="absolute inset-0 bg-white opacity-60 flex justify-center items-center z-10">
+                         <span className="delete_loader">Deleting...</span>
+                        </div>
+                      )}
+                  <h2 className="text-lg font-bold text-[#59B792]">{blog.title}</h2>
                   <p className="mt-2 text-gray-700">{blog.content}</p>
                   
                   {/* Display tags */}
@@ -263,7 +268,7 @@ const MyBlogs = () => {
                           key={tag}
                           className={`px-2 py-1 rounded-md text-sm cursor-pointer ${
                             selectedTags.includes(tag)
-                              ? 'bg-amber-500 text-white'
+                              ? 'bg-[#8ec2ad] text-white'
                               : 'bg-gray-200 hover:bg-gray-300'
                           }`}
                           onClick={() => handleTagClick(tag)}

@@ -16,12 +16,14 @@ const Profile = () => {
     const [isloading, setIsloading] = useState(false)
     const [activeTab, setActiveTab] = useState('myBlogs')
 
-    const navigate = useNavigate() 
+    const navigate = useNavigate()
     const [formData, setFormData] = useState({
-        name: "", 
-        email: "", 
-        image: ""
+        name: "",
+        email: "",
+        image: "",
+        bio: ""
     })
+   
 
     useEffect(() => {
         if (!id && profileData?._id) {
@@ -48,14 +50,15 @@ const Profile = () => {
 
             if (response.status === 200) {
                 const userData = response.data.data;
-                setFormData({ 
-                    name: userData.name || "", 
-                    email: userData.email || "", 
-                    image: userData.image || "" 
+                setFormData({
+                    name: userData.name || "",
+                    email: userData.email || "",
+                    image: userData.image || "",
+                    bio: userData.bio || ""
                 });
-                setProfileData({ 
+                setProfileData({
                     ...userData,
-                    _id: id  
+                    _id: id
                 });
             }
         } catch (error) {
@@ -65,7 +68,8 @@ const Profile = () => {
                 setFormData({
                     name: profileData.name || "",
                     email: profileData.email || "",
-                    image: profileData.image || ""
+                    image: profileData.image || "",
+                    bio: profileData.bio || ""
                 });
             }
         } finally {
@@ -76,40 +80,94 @@ const Profile = () => {
     useEffect(() => {
         getProfileData()
     }, [id])
-  
+
+
+    // const handleImageChange = (e) => {
+    //     const file = e.target.files[0];
+    //     if (file) {
+    //         setFormData({ ...formData, image: URL.createObjectURL(file) });
+    //     }
+    // };
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
-            setFormData({ ...formData, image: URL.createObjectURL(file) });
+            setFormData({ ...formData, image: file });
         }
     };
-  
-    
+    // const handlesubmit = async (e) => {
+    //     e.preventDefault();
+    //     if (!id) return;
+    //     const url = `https://panini-blog.vercel.app/user/edit/${id}`;
+    //     try {
+    //         setIsloading(true);
+    //         const response = await axios.patch(url, formData, {
+    //             headers: {
+    //                 Authorization: getToken(),
+    //             },
+    //         });
+
+    //         if (response.status === 200) {
+    //             toast.success(response.data.message);
+
+
+    //             const updatedProfileData = {
+    //                 ...profileData,
+    //                 name: formData.name,
+    //                 email: formData.email,
+    //                 image: formData.image,
+    //                 bio: formData.bio
+    //             };
+
+    //             // Update both context and localStorage
+    //             setProfileData(updatedProfileData);
+    //             localStorage.setItem("userdata", JSON.stringify(updatedProfileData));
+    //         } else {
+    //             toast.info(response.data.message);
+    //         }
+    //     } catch (error) {
+    //         console.error(error);
+    //         toast.error("Failed to update profile");
+    //     } finally {
+    //         setIsloading(false);
+    //     }
+    // };
     const handlesubmit = async (e) => {
         e.preventDefault();
         if (!id) return;
+        
         const url = `https://panini-blog.vercel.app/user/edit/${id}`;
+        
         try {
             setIsloading(true);
-            const response = await axios.patch(url, formData, {
+            
+            const formDataToSend = new FormData();
+            formDataToSend.append("name", formData.name);
+            formDataToSend.append("email", formData.email);
+            formDataToSend.append("bio", formData.bio);
+            
+            if (formData.image instanceof File) {
+                formDataToSend.append("image", formData.image);
+            }
+    
+            const response = await axios.patch(url, formDataToSend, {
                 headers: {
                     Authorization: getToken(),
+                    "Content-Type": "multipart/form-data",
                 },
             });
     
             if (response.status === 200) {
                 toast.success(response.data.message);
     
-                
-                const updatedProfileData = { 
-                    ...profileData, 
-                    name: formData.name, 
-                    email: formData.email, 
-                    image: formData.image 
+                const updatedProfileData = {
+                    ...profileData,
+                    name: formData.name,
+                    email: formData.email,
+                    image: response.data.data.image, 
+                    bio: formData.bio
                 };
-                
-                // Update both context and localStorage
+    
                 setProfileData(updatedProfileData);
                 localStorage.setItem("userdata", JSON.stringify(updatedProfileData));
             } else {
@@ -123,9 +181,9 @@ const Profile = () => {
         }
     };
     
-    
-   
-    
+
+
+
     console.log(profileData);
     return (
         <div className='mt-[82px] h-[calc(100vh-82px)] flex flex-col relative md:mt-0 md:h-screen'>
@@ -147,7 +205,7 @@ const Profile = () => {
 
             {isloading && (
                 <div className="fixed inset-0 bg-white opacity-30 flex justify-center items-center z-50">
-                   <Loader/>
+                    <Loader />
                 </div>
             )}
 
@@ -161,25 +219,25 @@ const Profile = () => {
                     <div className="w-full max-w-xl bg-white p-6 rounded-lg shadow-lg border border-amber-100">
                         <p className="text-xl font-bold text-[#59B792] mb-6"><span className='text-gray-600 text-2xl'>Hi,</span> {formData.name}</p>
                         <form action="" onSubmit={handlesubmit} className="space-y-4">
-                                                 <div className="flex justify-center mb-4">
-                             <label htmlFor="imageUpload" className="relative cursor-pointer">
-                                 <div className="w-24 h-24 rounded-full border-2 border-gray-300 flex items-center justify-center overflow-hidden">
-                                     {formData.image!=="" ? (
-                                         <img src={formData.image} alt="Profile" className="w-full h-full object-cover" />
-                                     ) : (
-                                        <IoCloudUploadOutline className='text-6xl text-[#59B792]'/>
-                                     )}
-                                 </div>
-                                 <input
-                                     type="file"
-                                     id="imageUpload"
-                                     name="image"
-                                    accept="image/*"
-                                     className="hidden"
-                                     onChange={handleImageChange}
-                                 />
-                             </label>
-                       </div>
+                            <div className="flex justify-center mb-4">
+                                <label htmlFor="imageUpload" className="relative cursor-pointer">
+                                    <div className="w-24 h-24 rounded-full border-2 border-gray-300 flex items-center justify-center overflow-hidden">
+                                        {formData.image !== "" ? (
+                                            <img src={formData.image} alt="Profile" className="w-full h-full object-cover" />
+                                        ) : (
+                                            <IoCloudUploadOutline className='text-6xl text-[#59B792]' />
+                                        )}
+                                    </div>
+                                    <input
+                                        type="file"
+                                        id="imageUpload"
+                                        name="image"
+                                        accept="image/*"
+                                        className="hidden"
+                                        onChange={handleImageChange}
+                                    />
+                                </label>
+                            </div>
                             <div>
                                 <label
                                     htmlFor="name"
@@ -194,7 +252,7 @@ const Profile = () => {
                                     value={formData.name}
                                     onChange={handleChange}
                                     placeholder="Your Name"
-                                     className="w-full mt-1 p-3  border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#59B792] focus:border-[#59B792]"
+                                    className="w-full mt-1 p-3  border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#59B792] focus:border-[#59B792]"
                                 />
                             </div>
 
@@ -214,6 +272,28 @@ const Profile = () => {
                                     placeholder="Your Email"
                                     className="w-full mt-1 p-3  border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#59B792] focus:border-[#59B792]"
                                 />
+
+                            </div>
+                            <div>
+                                <label
+                                    htmlFor="bio"
+                                    className="block text-sm font-medium text-gray-700"
+                                >
+                                    Bio
+                                </label>
+                                <div className="relative">
+                                    <textarea
+                                        name="bio"
+                                        value={formData.bio || ''}
+                                        onChange={handleChange}
+                                        placeholder="Your Bio"
+                                        maxLength={120}
+                                        className="overflow-y-scroll min-h-[100px] max-h-[100px] w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#59B792] focus:border-[#59B792]"
+                                    />
+                                    <p className="text-right text-sm text-gray-500 mt-1">
+                                        {formData.bio.length}/120
+                                    </p>
+                                </div>
                             </div>
                             <button
                                 type="submit"

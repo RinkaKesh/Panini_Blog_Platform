@@ -144,7 +144,7 @@ const BlogModal = ({
         placeholder="Title"
         value={blog.title || ''}
         onChange={handleChange}
-        className="border p-2 w-full mb-2"
+         className="w-full mt-4 p-3  border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#59B792] focus:border-[#59B792]"
       />
       <textarea
         name="content"
@@ -152,15 +152,15 @@ const BlogModal = ({
         ref={textareaRef}
         value={blog.content || ''}
         onChange={handleChange}
-        className="border p-2 w-full mb-2"
+         className="overflow-y-scroll min-h-[150px] max-h-[150px] w-full mt-4 p-3  border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#59B792] focus:border-[#59B792]"
       />
       
-      <div className="mb-2">
+      <div className="my-4">
         <label className="block text-sm text-gray-600 mb-1">Tags</label>
         <CreatableSelect
           isMulti
           placeholder="Select or create tags..."
-          options={defaultTags} // Predefined tag options
+          options={defaultTags}
           value={blog.tagOptions}
           onChange={handleTagChange}
           styles={selectStyles}
@@ -171,11 +171,12 @@ const BlogModal = ({
       
       <button
         onClick={handleSubmit}
-        className="bg-[#59B792] text-white px-4 py-2 rounded-md hover:bg-[#85a89a]"
+        className="mt-6 bg-[#59B792] text-white px-4 py-2 rounded-md hover:bg-[#85a89a]"
       >
         {editingBlog ? 'Update' : 'Create'}
       </button>
     </Modal>
+   
   );
 };
 

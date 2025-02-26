@@ -330,7 +330,7 @@ const Blogs = () => {
               <div className="relative flex-grow">
                 <input 
                   type="text" 
-                  className="w-full p-2 pl-10 border rounded-md focus:ring-2 focus:ring-[#59B792] focus:outline-none"
+                  className="w-full p-2 pl-10 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#59B792] focus:border-[#59B792]"
                   placeholder="Search by title, author, or tags..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
