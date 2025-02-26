@@ -80,7 +80,7 @@ const BlogModal = ({
       
       if (editingBlog) {
         const response = await axios.patch(
-          `http://localhost:8000/blogs/${editingBlog._id}`,
+          `https://echoversecheenta.vercel.app/blogs/${editingBlog._id}`,
           formattedBlog,
           { headers: { Authorization: getToken() } }
         );
@@ -92,7 +92,7 @@ const BlogModal = ({
         }
       } else {
         const response = await axios.post(
-          'http://localhost:8000/blogs/create',
+          'https://echoversecheenta.vercel.app/blogs/create',
           formattedBlog,
           { headers: { Authorization: getToken() } }
         );
