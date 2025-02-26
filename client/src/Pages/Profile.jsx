@@ -8,6 +8,7 @@ import Header from '../Components/Header'
 import MyBlogs from './MyBlogs'
 import './Blogs.css'
 import { IoCloudUploadOutline } from "react-icons/io5";
+import Loader from '../Components/Loader'
 
 const Profile = () => {
     const { id } = useParams()
@@ -15,10 +16,22 @@ const Profile = () => {
     const [isloading, setIsloading] = useState(false)
     const [activeTab, setActiveTab] = useState('myBlogs')
 
-    const navigate = useNavigate()
-       const [formData, setFormData] = useState({
-        name: "", email: "", image: ""
+    const navigate = useNavigate() 
+    const [formData, setFormData] = useState({
+        name: "", 
+        email: "", 
+        image: ""
     })
+
+    useEffect(() => {
+        if (!id && profileData?._id) {
+            navigate(`/profile/${profileData._id}`);
+        }
+        else if (!id && !profileData?._id) {
+            navigate('/login');
+        }
+    }, [id, profileData, navigate]);
+
     const handleChange = (e) => {
         const { name, value } = e.target
         setFormData({ ...formData, [name]: value })
@@ -34,19 +47,36 @@ const Profile = () => {
             });
 
             if (response.status === 200) {
-                const { name, email, image } = response.data.data;
-                setFormData({ name, email, image });
-                setProfileData({ name, email, image });
+                const userData = response.data.data;
+                setFormData({ 
+                    name: userData.name || "", 
+                    email: userData.email || "", 
+                    image: userData.image || "" 
+                });
+                setProfileData({ 
+                    ...userData,
+                    _id: id  
+                });
             }
         } catch (error) {
             console.error(error);
+            toast.error("Failed to fetch profile data");
+            if (profileData) {
+                setFormData({
+                    name: profileData.name || "",
+                    email: profileData.email || "",
+                    image: profileData.image || ""
+                });
+            }
         } finally {
             setIsloading(false);
         }
     };
+
     useEffect(() => {
         getProfileData()
     }, [id])
+  
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
@@ -54,45 +84,9 @@ const Profile = () => {
             setFormData({ ...formData, image: URL.createObjectURL(file) });
         }
     };
-
-    // const handlesubmit = async (e) => {
-    //     if (!id) { return }
-    //     e.preventDefault()
-    //     const url = `http://localhost:8000/user/edit/${id}`
-    //     try {
-    //         setIsloading(true)
-    //         const response = await axios({
-    //             method: "PATCH",
-    //             data: formData,
-    //             url: url,
-    //             headers: {
-    //                 Authorization: getToken()
-    //             }
-    //         })
-    //         if (response.status == 201) {
-    //             toast.success(response.data.message);
-    //             const { name, email } = formData;
-    //             const updatedProfileData = { ...profileData, name, email };
-
-    //             setProfileData(updatedProfileData);
-    //             localStorage.setItem("userdata", JSON.stringify(updatedProfileData));
-    //         }
-    //         else {
-    //             toast.info(response.data.message)
-    //         }
-    //     } catch (error) {
-
-    //         console.log(error);
-
-    //     }
-    //     finally {
-    //         setIsloading(false)
-    //     }
-    // }
-    useEffect(() => {
-        console.log(profileData); // Log whenever profileData is updated
-      }, [profileData]);
-      const handlesubmit = async (e) => {
+  
+    
+    const handlesubmit = async (e) => {
         e.preventDefault();
         if (!id) return;
         const url = `https://panini-blog.vercel.app/user/edit/${id}`;
@@ -104,24 +98,33 @@ const Profile = () => {
                 },
             });
     
-            if (response.status === 201) {
+            if (response.status === 200) {
                 toast.success(response.data.message);
     
-                const { name, email, image } = formData;
-                const updatedProfileData = { ...profileData, name, email, image };
-    
-                // Update context and localStorage
-                setProfileData(updatedProfileData); // Ensure this is updating context state
-                localStorage.setItem('userdata', JSON.stringify(updatedProfileData)); // Update localStorage
+                
+                const updatedProfileData = { 
+                    ...profileData, 
+                    name: formData.name, 
+                    email: formData.email, 
+                    image: formData.image 
+                };
+                
+                // Update both context and localStorage
+                setProfileData(updatedProfileData);
+                localStorage.setItem("userdata", JSON.stringify(updatedProfileData));
             } else {
                 toast.info(response.data.message);
             }
         } catch (error) {
             console.error(error);
+            toast.error("Failed to update profile");
         } finally {
             setIsloading(false);
         }
     };
+    
+    
+   
     
     console.log(profileData);
     return (
@@ -144,7 +147,7 @@ const Profile = () => {
 
             {isloading && (
                 <div className="fixed inset-0 bg-white opacity-30 flex justify-center items-center z-50">
-                    <span className="loader"></span>
+                   <Loader/>
                 </div>
             )}
 
@@ -227,4 +230,3 @@ const Profile = () => {
 }
 
 export default Profile
-

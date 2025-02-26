@@ -26,7 +26,7 @@ const Navbar = () => {
     <>
       {/* Desktop Navbar - Left Side */}
       <div className="hidden md:flex fixed left-0 top-0 bottom-0 w-[270px] p-6 bg-gray-50 text-xl text-[#59B792] font-medium flex-col justify-between items-center">
-        <div className="w-full h-[200px] flex justify-center">
+        <div className="w-full h-[200px] flex justify-center cursor-pointer" onClick={() => navigate('/blogs')}>
           <video autoPlay loop muted className="w-full h-full">
             <source src={logoMp4} type="video/mp4" />
           </video>
@@ -38,10 +38,20 @@ const Navbar = () => {
                 <Link to={`/profile/${profileData?._id}`}>
                   {profileData ? (
                     <div className="flex items-center justify-center gap-1">
-                      <div className="flex items-center justify-center w-10 h-10 text-black bg-blue-200 text-base rounded-full">
-                        {getInitials(profileData?.name)}
-                      </div>
-                      <p className="text-[20px]">{profileData?.name}</p>
+                      {profileData.image? (
+                        <img
+                          src={profileData.image}
+                          alt="Profile"
+                          className="w-10 h-10 rounded-full object-cover"
+                        />
+                      ) : (
+                        <div className="flex items-center justify-center w-10 h-10 text-black bg-blue-200 text-base rounded-full">
+                          {profileData.name ? getInitials(profileData.name) : 'GU'}
+                        </div>
+                      )}
+                      <p className="text-[20px]">
+                        {profileData.name ? profileData.name : 'Guest User'}
+                      </p>
                     </div>
                   ) : (
                     'Guest User'

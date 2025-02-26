@@ -8,7 +8,7 @@ const UserContext = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   
   useEffect(() => {
-    // Check auth status whenever localStorage changes
+   
     const handleStorageChange = () => {
       const storedAuth = isAuth()
       setIsLoggedIn(storedAuth)
@@ -19,7 +19,7 @@ const UserContext = ({ children }) => {
         setProfileData(storedUserData)
       }
     }
-
+    
     // Initial check
     handleStorageChange()
     window.addEventListener('storage', handleStorageChange)
