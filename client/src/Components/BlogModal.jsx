@@ -80,7 +80,7 @@ const BlogModal = ({
       
       if (editingBlog) {
         const response = await axios.patch(
-          `https://echoversecheenta.vercel.app/blogs/${editingBlog._id}`,
+          `https://panini-blog.vercel.app/blogs/${editingBlog._id}`,
           formattedBlog,
           { headers: { Authorization: getToken() } }
         );
@@ -92,7 +92,7 @@ const BlogModal = ({
         }
       } else {
         const response = await axios.post(
-          'https://echoversecheenta.vercel.app/blogs/create',
+          'https://panini-blog.vercel.app/blogs/create',
           formattedBlog,
           { headers: { Authorization: getToken() } }
         );
