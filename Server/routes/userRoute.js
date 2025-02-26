@@ -78,10 +78,8 @@ userRoute.patch("/edit/:id", upload.single("image"), async (req, res) => {
         }
 
         const updatedData = { ...req.body };
-
-        // If a new image is uploaded, update the image path
         if (req.file) {
-            updatedData.image = `/uploads/${req.file.filename}`;
+            updatedData.image = `/tmp/${req.file.filename}`;
         }
 
         const updatedUser = await UserModel.findByIdAndUpdate(req.params.id, updatedData, { new: true });
